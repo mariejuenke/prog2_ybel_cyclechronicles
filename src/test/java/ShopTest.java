@@ -11,107 +11,94 @@ public class ShopTest {
     @BeforeEach
     public void setUp(){
         shop = new Shop();
-        order = spy(Order.class);
+        order = spy(new Order(RACE, "Hans"));
     }
 
     // test Shop#accept
     @Test
     public void acceptEBike(){
-        doReturn(EBIKE).when(order).getBicycleType();
+        doReturn(EBIKE).when(order).bicycleType();
         assertFalse(shop.accept(order));
     }
 
     @Test
     public void acceptGravelBike(){
-        doReturn(GRAVEL).when(order).getBicycleType();
+        doReturn(GRAVEL).when(order).bicycleType();
         assertFalse(shop.accept(order));
     }
 
     @Test
     public void acceptRaceBike(){
-        doReturn(RACE).when(order).getBicycleType();
+        doReturn(RACE).when(order).bicycleType();
         assertTrue(shop.accept(order));
     }
     @Test
     public void acceptFixieBike(){
-        doReturn(FIXIE).when(order).getBicycleType();
+        doReturn(FIXIE).when(order).bicycleType();
         assertTrue(shop.accept(order));
     }
     @Test
     public void acceptSingleSpeedBike(){
-        doReturn(SINGLE_SPEED).when(order).getBicycleType();
+        doReturn(SINGLE_SPEED).when(order).bicycleType();
         assertTrue(shop.accept(order));
     }
 
     @Test
     public void acceptTwoOrdersFromSameCustomer(){
-        doReturn(RACE).when(order).getBicycleType();
-        doReturn("Hans").when(order).getCustomer();
+        doReturn(RACE).when(order).bicycleType();
+        doReturn("Hans").when(order).customer();
         shop.accept(order);
-        Order o1 = spy(Order.class);
-        doReturn(FIXIE).when(o1).getBicycleType();
-        doReturn("Hans").when(o1).getCustomer();
+        Order o1 = spy(new Order(FIXIE, "Hans"));
         assertFalse(shop.accept(o1));
     }
 
     @Test
     public void acceptMaxOrders(){
-        doReturn(RACE).when(order).getBicycleType();
-        doReturn("Hans").when(order).getCustomer();
+        doReturn(RACE).when(order).bicycleType();
+        doReturn("Hans").when(order).customer();
         shop.accept(order);
-        Order o1 = spy(Order.class);
-        doReturn(RACE).when(o1).getBicycleType();
-        doReturn("Frank").when(o1).getCustomer();
+
+        Order o1 = spy(new Order(RACE, "Frank"));
         shop.accept(o1);
-        Order o2 = spy(Order.class);
-        doReturn("Alex").when(o2).getCustomer();
-        doReturn(RACE).when(o2).getBicycleType();
+
+        Order o2 =spy(new Order(FIXIE, "Alex"));
         shop.accept(o2);
-        Order o3 = spy(Order.class);
-        doReturn("Mario").when(o3).getCustomer();
-        doReturn(RACE).when(o3).getBicycleType();
+
+        Order o3 = spy(new Order(FIXIE, "Mario"));
         shop.accept(o3);
-        Order o4 = spy(Order.class);
-        doReturn(RACE).when(o4).getBicycleType();
-        doReturn("Gustav").when(o4).getCustomer();
+
+        Order o4 = spy(new Order(FIXIE, "Gustav"));
         assertTrue(shop.accept(o4));
     }
 
     @Test
     public void acceptOverMaxOrders(){
-        doReturn(RACE).when(order).getBicycleType();
-        doReturn("Hans").when(order).getCustomer();
+        doReturn(RACE).when(order).bicycleType();
+        doReturn("Hans").when(order).customer();
         shop.accept(order);
-        Order o1 = spy(Order.class);
-        doReturn(RACE).when(o1).getBicycleType();
-        doReturn("Frank").when(o1).getCustomer();
+        Order o1 = spy(new Order(RACE, "Frank"));
         shop.accept(o1);
-        Order o2 = spy(Order.class);
-        doReturn("Alex").when(o2).getCustomer();
-        doReturn(RACE).when(o2).getBicycleType();
+
+        Order o2 = spy(new Order(RACE, "Alex"));
         shop.accept(o2);
-        Order o3 = spy(Order.class);
-        doReturn("Mario").when(o3).getCustomer();
-        doReturn(RACE).when(o3).getBicycleType();
+
+        Order o3 = spy(new Order(RACE, "Mario"));
         shop.accept(o3);
-        Order o4 = spy(Order.class);
-        doReturn(RACE).when(o4).getBicycleType();
-        doReturn("Gustav").when(o4).getCustomer();
+
+        Order o4 = spy(new Order(RACE, "Gustav"));
         shop.accept(o4);
-        Order o5 = spy(Order.class);
-        doReturn(RACE).when(o5).getBicycleType();
-        doReturn("Maik").when(o5).getCustomer();
+
+        Order o5 = spy(new Order(RACE, "Maik"));
         assertFalse(shop.accept(o5));
     }
 
     @Test
     public void acceptOrdersFromDifferentCostumers() {
-        doReturn(RACE).when(order).getBicycleType();
-        doReturn("Hans").when(order).getCustomer();
+        doReturn(RACE).when(order).bicycleType();
+        doReturn("Hans").when(order).customer();
         shop.accept(order);
-        Order o1 = spy(Order.class);
-        doReturn(RACE).when(o1).getBicycleType();
-        doReturn("Frank").when(o1).getCustomer();
+
+        Order o1 = spy(new Order(RACE, "Frank"));
         assertTrue(shop.accept(o1));
     }
 }
